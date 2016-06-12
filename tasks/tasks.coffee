@@ -31,7 +31,6 @@ gulp.task 'coffeelint', ->
 gulp.task 'coffee', ->
   gulp.src 'src/**/*.coffee'
   .pipe coffee bare: true
-  .pipe concat 'index.js'
   .pipe gulp.dest 'lib/'
 
 gulp.task 'test', ->

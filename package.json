@@ -1,8 +1,16 @@
 {
   "name": "loopback-fixtures",
   "description": "Expressive fixtures generator for Loopback",
-  "version": "0.0.0",
-  "dependencies": {},
+  "version": "0.0.1",
+  "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "fs": "0.0.2",
+    "lodash": "^4.13.1",
+    "loopback": "^2.29.0",
+    "merge": "^1.2.0",
+    "path": "^0.12.7",
+    "yamljs": "^0.2.7"
+  },
   "scripts": {
     "test": "COFFEECOV_INIT_ALL=false NODE_ENV=test gulp test",
     "watch": "gulp watch"
@@ -10,6 +18,7 @@
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
   },
+  "main": "lib/index.js",
   "author": "Samy Ghribi <ghribi.samy@gmail.com>",
   "license": "ISC",
   "devDependencies": {
