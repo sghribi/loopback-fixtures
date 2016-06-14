@@ -4,11 +4,28 @@ fs = require 'fs'
 loopback = require 'loopback'
 merge = require 'merge'
 path = require 'path'
+q = require 'q'
 YAML = require 'yamljs'
 
 savedData = {}
 
 module.exports =
+
+  purgeDatabase: (models) ->
+    promises = []
+    _.forEach models, (model) =>
+      promises.push @purgeModel(model)
+    q.all promises
+
+  purgeModel: (model) ->
+    purgingModel = q.defer()
+    model.destroyAll (err) ->
+      if err
+        purgingModel.reject err
+      else
+        purgingModel.resolve()
+      purgingModel.promise
+
 
   replaceReferenceInObjects: (object) ->
     _.each object, (value, key) ->
