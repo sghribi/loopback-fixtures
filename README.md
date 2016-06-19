@@ -19,9 +19,9 @@ Then, in your `server/component-config.json`, add :
 {
   // Some other stuff...
   "loopback-fixtures": {
-    fixturePath: '/fixtures/data/'  // Folder that contains YAML fixtures files
-    append: false,                  // Append the data fixtures
-    autoLoad: false                 // Load on startup
+    "fixturePath": '/fixtures/data/'  // Folder that contains YAML fixtures files
+    "append": false,                  // Append the data fixtures
+    "autoLoad": false                 // Load on startup
   }
 }
 ```
@@ -56,7 +56,7 @@ User:
     ``` js
     app.loadFixtures()
     .then(function() {
-      console.log('Done!);
+      console.log('Done!');
     })
     .catch(function(err) {
       console.log('Errors:', err);
