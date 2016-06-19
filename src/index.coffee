@@ -6,19 +6,22 @@ module.exports = (app, options) ->
   options = merge
     fixturePath: '/fixtures/data/'
     append: false
+    autoLoad: false
   , options
 
   promises = []
   if not options.append
     promises.push fixtureLoader.purgeDatabase(app.models)
-  promises.push (fixtureLoader.loadFixtures app.models, options.fixturePath)
+  promises.push fixtureLoader.loadFixtures(app.models, options.fixturePath)
 
   app.loadFixtures = ->
-    q.all promises
+    promises.reduce q.when
 
   console.log 'Starting loading'
-  app.loadFixtures()
-  .then ->
-    console.log 'Done !'
-  .catch (err) ->
-    console.log 'Erreurs : ', err
+
+  if options.autoLoad
+    app.loadFixtures()
+    .then ->
+      console.log 'Fixtures loaded!'
+    .catch (err) ->
+      console.log 'Errors on fixtures loading:', err
