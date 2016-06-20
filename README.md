@@ -36,9 +36,9 @@ Group:
 
 User:
   user{1..10}:
-    name: "User {@}"
+    name: "User {@} : {{name.lastName}}"
     groupId: @group{@}
-    email: "yolo{@}@gmail.com"
+    email: "{{internet.email}}"
     birthDate: "2016-01-01"
     favoriteNumber: "(function() { return Math.round(Math.random()*1000);})()"
 ```
@@ -63,7 +63,7 @@ User:
     });
     ```
 
-  - With a node command : **@TODO**
+ - With a node command : **@TODO**
 
     ```
     node ./node_modules/loopback-fixtures/load-fixtures.js [--fixturePath=/fixtures/data] [--append=false]
@@ -83,8 +83,64 @@ User:
  - `autoLoad` (default value `false`) **@TODO**
 
 
+### Features
+
+ - Load data according your model
+
+ - Multiple generators :
+
+    ``` yaml
+    User:
+      user{1..45}:
+        name: "User number {@}"
+    ```
+
+    `{@}` represents the current identifier for the generator
+
+ - References :
+
+     ``` yaml
+     Group:
+       group{1..2}:
+         name: "Groupe number {@}"
+
+     User:
+       user{1..9}:
+         name: "User number {@}"
+         group: @group1
+
+       user{10..19}:
+         name: "User number {@}"
+         group: @group2
+     ```
+
+     `@group1` represents the reference for the group1 and can be used in other fixtures
+
+ - Fakers :
+
+    ``` yaml
+    User:
+      user{1..10}:
+        name: "User n°{@} : {{name.lastName}} {{name.firstName}}"
+        email: "{{internet.email}}"
+    ```
+
+    You can use [Faker.js](https://github.com/marak/faker.js) API to provide fake data
+
+ - Custom function :
+
+    ``` yaml
+    User:
+      user{1..10}:
+        favoriteNumber: "(function() { return Math.round(Math.random()*1000);})()"
+    ```
+
+    You can use custom functions too
+
+
+
 ## Credits
-[Samy Ghribi](https://github.com/sghribi/)
+[Samy Ghribi](https://github.com/sghribi)
 
 ## License
 

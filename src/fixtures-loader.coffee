@@ -1,5 +1,6 @@
 _ = require 'lodash'
 async = require 'async'
+faker = require 'faker'
 fs = require 'fs'
 loopback = require 'loopback'
 merge = require 'merge'
@@ -63,18 +64,29 @@ module.exports =
         expandedData[identifier] = object
     return expandedData
 
-  executeFunctions: (expandedData) ->
-    _.each expandedData, (object, identifier) ->
+  executeFaker: (data) ->
+    _.each data, (object, identifier) ->
+      _.each object, (value, key) ->
+        try
+          data[identifier][key] = faker.fake value
+        catch e
+          data[identifier][key] = value
+    return data
+
+  executeFunctions: (data) ->
+    _.each data, (object, identifier) ->
       _.each object, (value, key) ->
         try
           fn = eval value
-          expandedData[identifier][key] = fn
+          data[identifier][key] = fn
         catch e
-    return expandedData
+    return data
 
   applyHelpers: (data) ->
     # Repeat "identifier{a..b}"
     expandedData = @executeGenerators data
+    # Execute faker {{name.lastname}} etc
+    expandedData = @executeFaker expandedData
     # Exec function
     expandedData = @executeFunctions expandedData
     return expandedData
