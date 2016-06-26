@@ -9,19 +9,14 @@ module.exports = (app, options) ->
     autoLoad: false
   , options
 
-  promises = []
-  if not options.append
-    promises.push fixtureLoader.purgeDatabase(app.models)
-  promises.push fixtureLoader.loadFixtures(app.models, options.fixturePath)
-
-  app.loadFixtures = ->
+  loadFixtures = ->
+    promises = []
+    if not options.append
+      promises.push fixtureLoader.purgeDatabase(app.models)
+    promises.push fixtureLoader.loadFixtures(app.models, options.fixturePath)
     promises.reduce q.when
 
   console.log 'Starting loading'
 
   if options.autoLoad
-    app.loadFixtures()
-    .then ->
-      console.log 'Fixtures loaded!'
-    .catch (err) ->
-      console.log 'Errors on fixtures loading:', err
+    loadFixtures()

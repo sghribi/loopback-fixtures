@@ -17,11 +17,10 @@ Then, in your `server/component-config.json`, add :
 
 ``` json
 {
-  // Some other stuff...
   "loopback-fixtures": {
-    "fixturePath": '/fixtures/data/'  // Folder that contains YAML fixtures files
-    "append": false,                  // Append the data fixtures
-    "autoLoad": false                 // Load on startup
+    "fixturePath": "/fixtures/data/",
+    "append": false,
+    "autoLoad": false
   }
 }
 ```
@@ -101,20 +100,21 @@ User:
 
      ``` yaml
      Group:
-       group{1..2}:
+       group{1..3}:
          name: "Groupe number {@}"
 
      User:
        user{1..9}:
          name: "User number {@}"
-         group: @group1
+         group: @group1  # Reference to group1
 
        user{10..19}:
          name: "User number {@}"
-         group: @group2
+         group: @group.* # Reference to any matching group
      ```
 
      `@group1` represents the reference for the group1 and can be used in other fixtures
+     `@group.*` represents the reference for a **random** matching group
 
  - Fakers :
 
