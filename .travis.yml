@@ -7,9 +7,5 @@ cache:
   directories:
     - node_modules
 
-before_install:
-  - npm install -g gulp
-  - npm install
-
 after_failure:
   - cat /home/travis/build/sghribi/loopback-fixtures/npm-debug.log
