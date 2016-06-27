@@ -62,10 +62,10 @@ User:
     });
     ```
 
- - With a node command : **@TODO**
+ - With a node command:
 
     ```
-    node ./node_modules/loopback-fixtures/load-fixtures.js [--fixturePath=/fixtures/data] [--append=false]
+    ./node_modules/loopback-fixtures/lib/load-fixtures.js
     ```
 
 ### Configuration options
@@ -79,7 +79,7 @@ User:
     If set to `true`, data fixtures will be append instead of deleting all data from the database first.
     **WARNING** `false` will erase your database
 
- - `autoLoad` (default value `false`) **@TODO**
+ - `autoLoad` (default value `false`)
 
 
 ### Features

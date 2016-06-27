@@ -20,3 +20,6 @@ module.exports = (app, options) ->
 
   if options.autoLoad
     loadFixtures()
+
+  app.loadFixtures = ->
+    loadFixtures()
