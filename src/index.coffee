@@ -10,13 +10,13 @@ module.exports = (app, options) ->
   , options
 
   loadFixtures = ->
-    promises = []
     if not options.append
-      promises.push fixtureLoader.purgeDatabase(app.models)
-    promises.push fixtureLoader.loadFixtures(app.models, options.fixturePath)
-    promises.reduce q.when
-
-  console.log 'Starting loading'
+      fixtureLoader.purgeDatabase app.models
+      .then ->
+        console.log 'Data purged'
+        fixtureLoader.loadFixtures app.models, options.fixturePath
+    else
+      fixtureLoader.loadFixtures app.models, options.fixturePath
 
   if options.autoLoad
     loadFixtures()
