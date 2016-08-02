@@ -1,11 +1,8 @@
 _ = require 'lodash'
-async = require 'async'
 faker = require 'faker'
 fs = require 'fs'
-loopback = require 'loopback'
-merge = require 'merge'
 path = require 'path'
-q = require 'q'
+Promise = require 'bluebird'
 YAML = require 'yamljs'
 
 idKey = 'id'
@@ -28,7 +25,7 @@ module.exports =
       fixtureData = YAML.load(fixturePath + fixture)
       loadingFixturesPromises.push @loadYamlFixture models, fixtureData
 
-    q.all loadingFixturesPromises
+    Promise.all loadingFixturesPromises
 
 
   purgeDatabase: (models) ->
@@ -37,19 +34,14 @@ module.exports =
     _.forEach models, (model) =>
       purgeModelPromises.push @purgeModel(model)
 
-    q.all purgeModelPromises
+    Promise.all purgeModelPromises
 
 
   purgeModel: (model) ->
-    purgingModel = q.defer()
-
-    model.destroyAll (err) ->
-      if err
-        purgingModel.reject err
-      else
-        purgingModel.resolve()
-
-      purgingModel.promise
+    new Promise (resolve, reject) ->
+      model.destroyAll (err) ->
+        reject err if err
+        resolve()
 
 
   getRandomMatchingObject: (pattern) ->
@@ -60,21 +52,19 @@ module.exports =
 
 
   replaceReferenceInObjects: (object) ->
-    replacingReferenceInObjects = q.defer()
+    new Promise (resolve, reject) =>
 
-    _.each object, (value, key) =>
-      if _.values(value)?[0] == '@'
-        identifier = value.substring 1
-        referencedObject = @getRandomMatchingObject identifier
-        if referencedObject?[idKey]
-          object[key] = referencedObject[idKey]
-        else
-          console.log '[ERROR] Please provide object for @' + identifier
-          replacingReferenceInObjects.reject()
-          return replacingReferenceInObjects.promise
+      _.each object, (value, key) =>
+        if _.values(value)?[0] == '@'
+          identifier = value.substring 1
+          referencedObject = @getRandomMatchingObject identifier
 
-    replacingReferenceInObjects.resolve()
-    replacingReferenceInObjects.promise
+          if referencedObject?[idKey]
+            object[key] = referencedObject[idKey]
+          else
+            reject '[ERROR] Please provide object for @' + identifier
+
+      resolve object
 
 
   executeGenerators: (data) ->
@@ -137,34 +127,17 @@ module.exports =
 
 
   loadYamlFixture: (models, fixtureData) ->
-    loadingFixture = q.defer()
+    fixtureData = _.map fixtureData, (data, index) ->
+      fixtures: data
+      name: index
 
-    # For each model in yml file
-    async.eachOfSeries fixtureData, (modelData, modelName, nextModel) =>
+    Promise.each fixtureData, (modelData) =>
+      modelData.fixtures = @applyHelpers modelData.fixtures
 
-      modelData = @applyHelpers modelData
-
-      # For each object for this model
-      async.eachOfSeries modelData, (object, identifier, nextObject) =>
-
-        # Replace stored '@' references
+      Promise.all _.map modelData.fixtures, (object, identifier) =>
         @replaceReferenceInObjects object
-        .then =>
-          # Save object in database
-          models[modelName].create object, (err, savedObject) =>
-            return nextObject(err) if err
-            @savedData[identifier] = savedObject
-            console.log "[#{modelName}] - #{identifier} imported (id : #{savedObject?[idKey]})"
-            nextObject()
-        .catch (err) ->
-          nextObject err
-      , (err) ->
-        return nextModel(err) if err
-        nextModel()
-    , (err) ->
-      if err
-        loadingFixture.reject err
-      else
-        loadingFixture.resolve()
-
-    loadingFixture.promise
+        .then (fixture) ->
+          models[modelData.name].create fixture
+        .then (savedObject) =>
+          @savedData[identifier] = savedObject
+          console.log "[#{modelData.name}] - #{identifier} imported (id : #{savedObject?[idKey]})"
