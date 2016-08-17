@@ -134,10 +134,13 @@ module.exports =
     Promise.each fixtureData, (modelData) =>
       modelData.fixtures = @applyHelpers modelData.fixtures
 
-      Promise.all _.map modelData.fixtures, (object, identifier) =>
-        @replaceReferenceInObjects object
-        .then (fixture) ->
-          models[modelData.name].create fixture
+      modelFixtures = _.map modelData.fixtures, (data, index) ->
+        object: data
+        identifier: index
+      Promise.each modelFixtures, (fixture) =>
+        @replaceReferenceInObjects fixture.object
+        .then (object) ->
+          models[modelData.name].create object
         .then (savedObject) =>
-          @savedData[identifier] = savedObject
-          console.log "[#{modelData.name}] - #{identifier} imported (id : #{savedObject?[idKey]})"
+          @savedData[fixture.identifier] = savedObject
+          console.log "[#{modelData.name}] - #{fixture.identifier} imported (id : #{savedObject?[idKey]})"
