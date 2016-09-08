@@ -1,6 +1,5 @@
 fixtureLoader = require './fixtures-loader'
 merge = require 'merge'
-q = require 'q'
 
 module.exports = (app, options) ->
   options = merge
