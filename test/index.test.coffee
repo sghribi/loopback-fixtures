@@ -70,7 +70,7 @@ describe 'loopback-fixtures', ->
       it 'with existing reference', (done) ->
         fixtureLoader.replaceReferenceInObjects fixtureLoader.savedData.user
         .then ->
-          expect(fixtureLoader.getRandomMatchingObject).to.have.been.calledWith 'group_yellow'
+          expect(fixtureLoader.getRandomMatchingObject).to.have.been.calledWith '^group_yellow$'
           done()
 
       it 'and remplace reference key', (done) ->
