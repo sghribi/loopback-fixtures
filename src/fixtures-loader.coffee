@@ -57,7 +57,7 @@ module.exports =
       _.each object, (value, key) =>
         if _.values(value)?[0] == '@'
           identifier = value.substring 1
-          referencedObject = @getRandomMatchingObject identifier
+          referencedObject = @getRandomMatchingObject "^"+identifier+"$"
 
           if referencedObject?[idKey]
             object[key] = referencedObject[idKey]
@@ -143,4 +143,5 @@ module.exports =
           models[modelData.name].create object
         .then (savedObject) =>
           @savedData[fixture.identifier] = savedObject
-          console.log "[#{modelData.name}] - #{fixture.identifier} imported (id : #{savedObject?[idKey]})"
+          console.log "[#{modelData.name}] - #{fixture.identifier} " +
+                      "imported (id : #{savedObject?[idKey]})"
