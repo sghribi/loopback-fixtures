@@ -10,7 +10,7 @@ Expressive fixtures generator for Loopback
 ### Basic usage
 
 ```
-npm install --save loopback-fixtures
+npm install --save loopback-fixtures-loader
 ```
 
 Then, in your `server/component-config.json`, add :
