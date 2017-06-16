@@ -1,4 +1,4 @@
-# loopback-fixtures
+# loopback-fixtures-loader
 
 Expressive fixtures generator for Loopback
 
@@ -65,7 +65,7 @@ User:
  - With a node command:
 
     ```
-    ./node_modules/loopback-fixtures/lib/load-fixtures.js
+    ./node_modules/loopback-fixtures-loader/lib/load-fixtures.js
     ```
 
 ### Configuration options

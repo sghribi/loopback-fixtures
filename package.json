@@ -1,7 +1,7 @@
 {
   "name": "loopback-fixtures-loader",
   "description": "Expressive fixtures generator for Loopback",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "async": "^2.0.0-rc.6",
     "bluebird": "^3.4.1",
