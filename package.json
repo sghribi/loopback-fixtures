@@ -1,7 +1,7 @@
 {
-  "name": "loopback-fixtures-loader",
+  "name": "loopback-fixtures",
   "description": "Expressive fixtures generator for Loopback",
-  "version": "0.0.3",
+  "version": "0.0.12",
   "dependencies": {
     "async": "^2.0.0-rc.6",
     "bluebird": "^3.4.1",
@@ -25,7 +25,7 @@
     "registry": "http://registry.npmjs.org"
   },
   "main": "lib/index.js",
-  "author": "Diego Navarro <diego.navarro@domandtom.com>",
+  "author": "Samy Ghribi <ghribi.samy@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "chai": "^3.5.0",
@@ -43,6 +43,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:diegogntDT/loopback-fixtures.git"
+    "url": "git@github.com:sghribi/loopback-fixtures.git"
   }
 }
