@@ -1,4 +1,4 @@
-# loopback-fixtures-loader
+# loopback-fixtures
 
 Expressive fixtures generator for Loopback
 
@@ -10,7 +10,7 @@ Expressive fixtures generator for Loopback
 ### Basic usage
 
 ```
-npm install --save loopback-fixtures-loader
+npm install --save loopback-fixtures
 ```
 
 Then, in your `server/component-config.json`, add :
@@ -65,7 +65,7 @@ User:
  - With a node command:
 
     ```
-    ./node_modules/loopback-fixtures-loader/lib/load-fixtures.js
+    ./node_modules/loopback-fixtures/lib/load-fixtures.js
     ```
 
 ### Configuration options
