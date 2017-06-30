@@ -1,5 +1,5 @@
-#!/usr/bin/env node
-
+`#!/usr/bin/env node
+`
 require 'coffee-script/register'
 optimist = require 'optimist'
 app = require '../../../server/server'
