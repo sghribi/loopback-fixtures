@@ -67,17 +67,15 @@ describe 'loopback-fixtures', ->
         )
         done()
 
-      it 'with existing reference', (done) ->
+      it 'with existing reference', ->
         fixtureLoader.replaceReferenceInObjects fixtureLoader.savedData.user
         .then ->
           expect(fixtureLoader.getRandomMatchingObject).to.have.been.calledWith '^group_yellow$'
-          done()
 
-      it 'and remplace reference key', (done) ->
+      it 'and remplace reference key', ->
         fixtureLoader.replaceReferenceInObjects fixtureLoader.savedData.user
         .then ->
           expect(fixtureLoader.savedData.user.groupId).to.eql 1
-          done()
 
     describe 'should call replaceReferenceInObjects with the right parameters', ->
       beforeEach (done) ->
@@ -101,3 +99,4 @@ describe 'loopback-fixtures', ->
           done(new Error 'it should not be called')
         .catch ->
           done()
+        return
