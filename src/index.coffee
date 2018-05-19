@@ -8,17 +8,17 @@ module.exports = (app, options) ->
     autoLoad: false
   , options
 
-  loadFixtures = ->
+  loadFixtures = (opt)->
     if not options.append
-      fixtureLoader.purgeDatabase app.models
+      fixtureLoader.purgeDatabase app.models, opt
       .then ->
         console.log 'Data purged'
-        fixtureLoader.loadFixtures app.models, options.fixturePath
+        fixtureLoader.loadFixtures app.models, options.fixturePath, opt
     else
-      fixtureLoader.loadFixtures app.models, options.fixturePath
+      fixtureLoader.loadFixtures app.models, options.fixturePath, opt
 
   if options.autoLoad
     loadFixtures()
 
-  app.loadFixtures = ->
-    loadFixtures()
+  app.loadFixtures = (opt) ->
+    loadFixtures(opt)

@@ -11,7 +11,7 @@ module.exports =
 
   savedData: {}
 
-  loadFixtures: (models, fixturesPath) ->
+  loadFixtures: (models, fixturesPath, opt) ->
     # Get all yml files
     fixturePath = path.join process.cwd(), fixturesPath
     fixtureFolderContents = fs.readdirSync fixturePath
@@ -23,23 +23,22 @@ module.exports =
     # For each yml file
     _.each fixtures, (fixture) =>
       fixtureData = YAML.load(fixturePath + fixture)
-      loadingFixturesPromises.push @loadYamlFixture models, fixtureData
+      loadingFixturesPromises.push @loadYamlFixture models, fixtureData, opt
 
     Promise.all loadingFixturesPromises
 
 
-  purgeDatabase: (models) ->
+  purgeDatabase: (models, opt) ->
     purgeModelPromises = []
 
     _.forEach models, (model) =>
-      purgeModelPromises.push @purgeModel(model)
+      purgeModelPromises.push @purgeModel(model,opt)
 
     Promise.all purgeModelPromises
 
-
-  purgeModel: (model) ->
+  purgeModel: (model,opt) ->
     new Promise (resolve, reject) ->
-      model.destroyAll (err) ->
+      model.destroyAll {}, opt, (err) ->
         reject err if err
         resolve()
 
@@ -126,7 +125,7 @@ module.exports =
     return expandedData
 
 
-  loadYamlFixture: (models, fixtureData) ->
+  loadYamlFixture: (models, fixtureData, opt) ->
     fixtureData = _.map fixtureData, (data, index) ->
       fixtures: data
       name: index
@@ -140,7 +139,7 @@ module.exports =
       Promise.each modelFixtures, (fixture) =>
         @replaceReferenceInObjects fixture.object
         .then (object) ->
-          models[modelData.name].create object
+          models[modelData.name].create object, opt
         .then (savedObject) =>
           @savedData[fixture.identifier] = savedObject
           console.log "[#{modelData.name}] - #{fixture.identifier} " +
