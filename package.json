@@ -21,7 +21,7 @@
     "watch": "gulp watch"
   },
   "publishConfig": {
-    "registry": "http://registry.npmjs.org"
+    "registry": "https://registry.npmjs.org"
   },
   "main": "lib/index.js",
   "author": "Samy Ghribi <ghribi.samy@gmail.com>",
