@@ -32,7 +32,8 @@ module.exports =
     purgeModelPromises = []
 
     _.forEach models, (model) =>
-      purgeModelPromises.push @purgeModel(model)
+      if model.hasOwnProperty 'destroyAll'
+        purgeModelPromises.push @purgeModel(model)
 
     Promise.all purgeModelPromises
 
